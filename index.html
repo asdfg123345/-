@@ -1,0 +1,1872 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🍓 零食番茄钟 · 手账贴纸风</title>
+<!-- Google Fonts 中文手写体 -->
+<link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=ZCOOL+KuaiLe&family=Zhi+Mang+Xing&display=swap" rel="stylesheet">
+<style>
+/* ============ CSS 变量 ============ */
+:root {
+    /* 手账贴纸风主色板 - 粉彩色调 */
+    --color-cream-pink: #FFE4E1;       /* 奶油粉 */
+    --color-mint: #B5EAD7;              /* 薄荷绿 */
+    --color-lemon: #FFFACD;             /* 柠檬黄 */
+    --color-sky: #E0F4FF;               /* 天空蓝 */
+    --color-lavender: #E8D5F2;          /* 淡紫 */
+    --color-peach: #FFDAB9;             /* 桃色 */
+    --color-cocoa: #8B6F47;             /* 可可棕 - 文字主色 */
+    --color-cocoa-light: #B89B76;       /* 可可棕浅 */
+    --color-gold: #FFD700;              /* 金色 - 特殊贴纸 */
+    --color-white: #FFFDF5;             /* 米白背景 */
+    --color-paper-line: #E8D8B8;        /* 便签纸格子线 */
+
+    /* 字体 */
+    --font-hand: 'Ma Shan Zheng', 'ZCOOL KuaiLe', 'KaiTi', cursive;
+    --font-cute: 'ZCOOL KuaiLe', 'Ma Shan Zheng', 'KaiTi', cursive;
+    --font-script: 'Zhi Mang Xing', 'Ma Shan Zheng', cursive;
+
+    /* 阴影 */
+    --shadow-sticker: 2px 3px 6px rgba(139, 111, 71, 0.25);
+    --shadow-sticker-hover: 4px 6px 12px rgba(139, 111, 71, 0.35);
+}
+
+/* ============ 全局重置 ============ */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: var(--font-hand);
+    color: var(--color-cocoa);
+    background: var(--color-white);
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* ============ 便签纸格子背景 ============ */
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+        linear-gradient(var(--color-paper-line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--color-paper-line) 1px, transparent 1px);
+    background-size: 30px 30px;
+    opacity: 0.3;
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* 斜向渐变叠加，增加手账纸质感 */
+body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,228,225,0.15) 0%, rgba(181,234,215,0.15) 50%, rgba(255,250,205,0.15) 100%);
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* ============ 页面容器 ============ */
+.container {
+    position: relative;
+    z-index: 1;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 30px 20px 60px;
+}
+
+/* ============ 和纸胶带装饰 ============ */
+.washi {
+    position: absolute;
+    height: 35px;
+    z-index: 2;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    opacity: 0.85;
+}
+.washi-top-left {
+    top: 0; left: 0; right: 0;
+    background: repeating-linear-gradient(
+        90deg,
+        var(--color-cream-pink) 0px,
+        var(--color-cream-pink) 20px,
+        var(--color-peach) 20px,
+        var(--color-peach) 40px
+    );
+    transform: rotate(-0.8deg);
+}
+.washi-top-right {
+    top: 42px; right: -15px; width: 140px;
+    background: repeating-linear-gradient(
+        -45deg,
+        var(--color-mint) 0px,
+        var(--color-mint) 15px,
+        var(--color-sky) 15px,
+        var(--color-sky) 30px
+    );
+    transform: rotate(15deg);
+}
+.washi-bottom {
+    bottom: 10px; left: 10%; width: 80%;
+    background: repeating-linear-gradient(
+        90deg,
+        var(--color-lemon) 0px,
+        var(--color-lemon) 25px,
+        transparent 25px,
+        transparent 30px,
+        var(--color-lavender) 30px,
+        var(--color-lavender) 55px,
+        transparent 55px,
+        transparent 60px
+    );
+    transform: rotate(1deg);
+}
+
+/* ============ 标题区域 ============ */
+.header {
+    text-align: center;
+    margin-bottom: 30px;
+    padding-top: 50px;
+    position: relative;
+}
+.header h1 {
+    font-family: var(--font-script);
+    font-size: 48px;
+    color: var(--color-cocoa);
+    text-shadow: 2px 2px 0 var(--color-cream-pink), -1px -1px 0 var(--color-mint);
+    letter-spacing: 4px;
+}
+.header .subtitle {
+    font-family: var(--font-cute);
+    font-size: 18px;
+    color: var(--color-cocoa-light);
+    margin-top: 8px;
+    letter-spacing: 2px;
+}
+
+/* 涂鸦小星星 */
+.doodle {
+    position: absolute;
+    font-size: 20px;
+    opacity: 0.6;
+}
+.doodle-star1 { top: 20px; left: 15%; transform: rotate(20deg); }
+.doodle-star2 { top: 10px; right: 20%; transform: rotate(-15deg); }
+.doodle-heart1 { top: 45px; left: 25%; color: #FFB6C1; }
+.doodle-flower1 { top: 30px; right: 10%; color: var(--color-peach); }
+
+/* ============ 主内容区域 ============ */
+.main-content {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 30px;
+    position: relative;
+}
+
+@media (max-width: 850px) {
+    .main-content { grid-template-columns: 1fr; }
+}
+
+/* ============ 便签纸卡片基础样式 ============ */
+.sticker-card {
+    background: var(--color-white);
+    border-radius: 12px;
+    padding: 25px;
+    position: relative;
+    box-shadow: var(--shadow-sticker);
+    border: 2px dashed var(--color-cocoa-light);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.sticker-card:hover {
+    box-shadow: var(--shadow-sticker-hover);
+}
+
+/* ============ 计时器区域 ============ */
+.timer-section {
+    text-align: center;
+    padding: 40px 25px;
+}
+
+/* 阶段状态横幅 */
+.phase-banner {
+    display: inline-block;
+    padding: 8px 24px;
+    border-radius: 20px;
+    font-family: var(--font-cute);
+    font-size: 20px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow-sticker);
+    transform: rotate(-1deg);
+}
+.phase-focus {
+    background: var(--color-cream-pink);
+    color: var(--color-cocoa);
+    border: 2px dashed #E8A0A0;
+}
+.phase-short-break {
+    background: var(--color-mint);
+    color: var(--color-cocoa);
+    border: 2px dashed #8BC9B0;
+    transform: rotate(1deg);
+}
+.phase-long-break {
+    background: var(--color-sky);
+    color: var(--color-cocoa);
+    border: 2px dashed #A8C8E0;
+    transform: rotate(-0.5deg);
+}
+
+/* 计时器表盘容器（垂直排列：表盘 + 数字时间） */
+.timer-display {
+    position: relative;
+    width: 280px;
+    margin: 0 auto 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.timer-display .timer-face {
+    width: 280px;
+    height: 280px;
+}
+.timer-face {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    /* 原始渐变背景已移除，改由 tomato-bg SVG 填充 */
+    border: 4px solid var(--color-cream-pink);
+    box-shadow: var(--shadow-sticker), inset 0 0 30px rgba(0,0,0,0.08);
+    position: relative;
+    overflow: hidden;
+}
+
+/* 卡通番茄背景 SVG（z-index:0，在所有元素底下） */
+.tomato-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    z-index: 0;
+    /* 让刻度和指针在番茄上面显示 */
+    pointer-events: none;
+}
+
+/* 表盘容器（进度环 + 刻度子元素） */
+.timer-ring {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    z-index: 1;
+    transition: background 0.5s ease;
+    /* 默认：无进度（0% 完成）。进度颜色是半透明白色，叠在番茄上既可见又不遮番茄 */
+    background: conic-gradient(var(--phase-color, rgba(255,255,255,0.45)) 0deg, transparent 0deg);
+}
+/* 表盘阶段颜色变量（番茄背景上用半透明白/亮色，不遮底） */
+.timer-ring-focus { --phase-color: rgba(255, 255, 255, 0.45); }
+.timer-ring-short { --phase-color: rgba(170, 255, 210, 0.55); }
+.timer-ring-long  { --phase-color: rgba(180, 220, 255, 0.55); }
+
+/* 表盘刻度：从中心向外放射，但只画外圈 40px 长，留出中心给番茄表情 */
+.clock-tick {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 2px;
+    height: 42px;
+    background: rgba(255, 255, 255, 0.75);
+    transform-origin: center bottom;    /* 旋转轴在刻度底部（即表盘中心） */
+    /* translate(-50%, -100%)：把 tick 的底部贴到中心，然后整根向上延伸 42px */
+    /* rotate(var)：围绕中心旋转 */
+    transform: translate(-50%, -100%) rotate(var(--tick-angle, 0deg));
+    z-index: 2;
+}
+.clock-tick.major {
+    width: 3px;
+    height: 52px;
+    background: #FFFDF5;
+    opacity: 0.92;
+}
+
+/* 指针通用样式 */
+.clock-hand {
+    position: absolute;
+    left: 50%;
+    bottom: 50%;
+    transform-origin: bottom center;
+    z-index: 10;
+    pointer-events: none;
+}
+
+/* ===== 三根指针：高对比度颜色、长度略缩短给表情让位 ===== */
+
+/* 时针：番茄红 #E53935 */
+.hour-hand {
+    width: 9px;
+    height: 62px;                       /* 原 72px，缩短让顶部不遮花萼 */
+    background: #E53935;
+    border-radius: 4px;
+    transform: translateX(-50%) rotate(0deg);
+    transition: transform 0.6s ease-out;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.35), inset 2px 0 3px rgba(255,255,255,0.35);
+}
+
+/* 分针：皇家蓝 #2E4DD6 */
+.minute-hand {
+    width: 7px;
+    height: 82px;                       /* 原 98px */
+    background: #2E4DD6;
+    border-radius: 3px;
+    transform: translateX(-50%) rotate(0deg);
+    transition: transform 0.35s ease-out;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3), inset 2px 0 3px rgba(255,255,255,0.4);
+}
+
+/* 秒针：金黄（渐变）—— 最细最长，但顶端不超过 90px */
+.second-hand {
+    width: 5px;
+    height: 92px;                       /* 原 116px，保留末端 emoji 足够可见 */
+    background: linear-gradient(to top, #FFB300 55%, #FFD54F 100%);
+    border-radius: 2px;
+    transform: translateX(-50%) rotate(0deg);
+    box-shadow: 0 2px 8px rgba(255,179,0,0.55), inset 1px 0 2px rgba(255,255,255,0.5);
+}
+/* 秒针末端 emoji 装饰 */
+.second-hand::before {
+    content: attr(data-emoji);
+    position: absolute;
+    top: -24px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 22px;
+    line-height: 1;
+    filter: drop-shadow(0 2px 3px rgba(0,0,0,0.3));
+}
+
+/* 中心轴点：深巧克力棕，把三根指针牢牢"钉"住 */
+.clock-center-dot {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 20px;
+    height: 20px;
+    background: #3E2723;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 20;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.4), inset 0 0 5px rgba(255,255,255,0.3);
+}
+
+/* ============ 数字时间（三段式，大号清晰可读） ============ */
+.time-capsule {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    margin-top: 16px;
+    padding: 8px 22px;
+    background: var(--color-white);
+    border-radius: 18px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.12), inset 0 0 0 2px rgba(139,111,71,0.15);
+    border: 2px dashed rgba(139,111,71,0.3);
+    transform: rotate(-1deg);
+}
+
+/* 分钟 — 大号、深色、最醒目 */
+.time-min {
+    font-family: var(--font-script);
+    font-size: 56px;
+    font-weight: bold;
+    color: var(--color-cocoa);
+    line-height: 1;
+    text-shadow: 2px 2px 0 rgba(255,182,193,0.4);
+    min-width: 2ch;
+    text-align: right;
+    display: inline-block;
+}
+
+/* 冒号 — 鲜艳番茄红 + 呼吸闪烁 */
+.time-colon {
+    font-family: var(--font-script);
+    font-size: 48px;
+    font-weight: bold;
+    color: #E53935;
+    line-height: 1;
+    padding: 0 4px;
+    animation: colonBlink 1s steps(2, end) infinite;
+}
+@keyframes colonBlink {
+    0%, 49%   { opacity: 1; }
+    50%, 100% { opacity: 0.25; }
+}
+
+/* 秒 — 比分钟小一圈，皇家蓝，区分明显 */
+.time-sec {
+    font-family: var(--font-script);
+    font-size: 40px;
+    font-weight: bold;
+    color: #2E4DD6;
+    line-height: 1;
+    min-width: 2ch;
+    text-align: left;
+    display: inline-block;
+    opacity: 0.92;
+}
+
+/* 手机上整体缩小 */
+@media (max-width: 600px) {
+    .time-capsule { padding: 6px 16px; margin-top: 12px; }
+    .time-min    { font-size: 42px; }
+    .time-colon  { font-size: 36px; }
+    .time-sec    { font-size: 30px; }
+}
+
+/* ============ 事件规划表（手账贴纸风） ============ */
+.event-planner {
+    margin-bottom: 22px;
+    background: #FFFBF5;
+    border-radius: 16px;
+    padding: 14px 14px 10px;
+    border: 2px dashed var(--color-cocoa-light);
+    box-shadow: 0 2px 0 rgba(0,0,0,0.04);
+}
+
+/* 规划表标题 */
+.planner-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding-bottom: 8px;
+    margin-bottom: 6px;
+    border-bottom: 1.5px dashed rgba(139,111,71,0.25);
+}
+.planner-title {
+    font-family: var(--font-hand);
+    font-size: 18px;
+    color: var(--color-cocoa);
+    font-weight: bold;
+}
+.planner-hint {
+    font-family: var(--font-cute);
+    font-size: 11px;
+    color: var(--color-cocoa-light);
+}
+
+/* 每一行 */
+.plan-row {
+    display: grid;
+    grid-template-columns: 30px 60px 1fr auto;
+    gap: 8px;
+    align-items: center;
+    padding: 8px 10px;
+    margin: 5px 0;
+    background: #FFFDF8;
+    border-radius: 12px;
+    border: 1.5px solid rgba(139,111,71,0.12);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+/* 当前轮 — 高亮（桃色贴纸感） */
+.plan-row.active {
+    background: linear-gradient(135deg, #FFF0F0, #FFE4E1);
+    border-color: var(--color-peach);
+    transform: rotate(-0.5deg) scale(1.01);
+    box-shadow: 0 3px 10px rgba(255,143,163,0.25);
+}
+.plan-row.active .plan-badge {
+    background: var(--color-peach);
+    color: white;
+    box-shadow: 0 0 0 2px rgba(255,143,163,0.3);
+}
+
+/* 已完成轮 — 绿色贴纸 + 文字打勾效果 */
+.plan-row.completed {
+    background: linear-gradient(135deg, #F0FBF5, #E6F7EF);
+    border-color: #8BC9B0;
+    transform: rotate(0.3deg);
+}
+.plan-row.completed .plan-badge {
+    background: var(--color-mint);
+    color: #4A7C5C;
+    border-color: #8BC9B0;
+}
+.plan-row.completed .plan-task {
+    color: #88B09A;
+    text-decoration: line-through;
+    text-decoration-color: rgba(139,176,154,0.6);
+}
+.plan-row.completed::after {
+    content: '✓';
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: var(--font-hand);
+    font-size: 22px;
+    color: #6B8E6B;
+    font-weight: bold;
+}
+
+/* 序号徽章 ①②③④ */
+.plan-badge {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--color-cocoa-light);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: var(--font-cute);
+    font-size: 13px;
+    border: 1.5px solid rgba(139,111,71,0.2);
+    flex-shrink: 0;
+    transition: all 0.3s ease;
+}
+
+/* 阶段信息 */
+.plan-phase {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1px;
+    flex-shrink: 0;
+}
+.phase-emoji {
+    font-size: 18px;
+    line-height: 1;
+}
+.phase-name {
+    font-family: var(--font-cute);
+    font-size: 10px;
+    color: var(--color-cocoa-light);
+    text-align: center;
+}
+
+/* 任务输入框 */
+.plan-task {
+    font-family: var(--font-hand);
+    font-size: 15px;
+    color: var(--color-cocoa);
+    background: transparent;
+    border: none;
+    outline: none;
+    padding: 4px 6px;
+    width: 100%;
+    min-width: 0;
+    border-bottom: 1px dotted rgba(139,111,71,0.25);
+    transition: border-color 0.2s;
+}
+.plan-task:focus {
+    border-bottom-color: var(--color-peach);
+}
+.plan-task::placeholder {
+    color: rgba(139,111,71,0.35);
+    font-style: italic;
+}
+
+/* 休息提示 */
+.plan-rest {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1px;
+    flex-shrink: 0;
+    padding: 4px 6px;
+    background: #E6F7EF;
+    border-radius: 8px;
+    border: 1px solid rgba(139,176,154,0.3);
+}
+.plan-rest.long-rest {
+    background: #E6F0FA;
+    border-color: rgba(142,197,232,0.5);
+}
+.rest-emoji { font-size: 14px; line-height: 1; }
+.rest-label {
+    font-family: var(--font-cute);
+    font-size: 10px;
+    color: #6B8E6B;
+}
+.plan-rest.long-rest .rest-label { color: #4A7FA5; }
+
+/* 隐藏的旧 round-indicator（保留兼容） */
+.round-indicator { display: none !important; }
+
+/* 鼓励文案 */
+.encourage-text {
+    font-family: var(--font-hand);
+    font-size: 16px;
+    color: var(--color-cocoa-light);
+    margin-bottom: 25px;
+    padding: 10px 20px;
+    background: var(--color-lemon);
+    border-radius: 15px;
+    display: inline-block;
+    border: 2px dashed #D4C26A;
+    transform: rotate(-1deg);
+    min-height: 40px;
+}
+
+/* 控制按钮 - 贴纸风格 */
+.control-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+.btn-sticker {
+    font-family: var(--font-cute);
+    font-size: 18px;
+    padding: 12px 28px;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    box-shadow: var(--shadow-sticker);
+    transition: all 0.25s ease;
+    position: relative;
+    border: 2px dashed rgba(139, 111, 71, 0.3);
+    color: var(--color-cocoa);
+}
+.btn-sticker:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: var(--shadow-sticker-hover);
+}
+.btn-sticker:active {
+    transform: translateY(0) scale(0.98);
+}
+.btn-play {
+    background: var(--color-mint);
+}
+.btn-pause {
+    background: var(--color-peach);
+}
+.btn-reset {
+    background: var(--color-lemon);
+}
+.btn-skip {
+    background: var(--color-sky);
+}
+
+/* 小按钮 */
+.btn-small {
+    font-size: 14px;
+    padding: 8px 16px;
+}
+
+/* ============ 右侧面板 ============ */
+.side-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+/* 贴纸收藏区 */
+.collection-section {
+    text-align: center;
+}
+.section-title {
+    font-family: var(--font-script);
+    font-size: 26px;
+    color: var(--color-cocoa);
+    margin-bottom: 15px;
+    text-align: center;
+    position: relative;
+}
+.section-title::after {
+    content: '✂';
+    position: absolute;
+    right: -10px;
+    top: -5px;
+    font-size: 16px;
+    color: var(--color-cocoa-light);
+}
+.section-title::before {
+    content: '♥';
+    position: absolute;
+    left: -12px;
+    top: 0;
+    font-size: 16px;
+    color: #FFB6C1;
+}
+
+.stickers-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+.sticker-item {
+    aspect-ratio: 1;
+    background: var(--color-white);
+    border-radius: 10px;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    box-shadow: 1px 2px 4px rgba(139, 111, 71, 0.15);
+    transform: rotate(var(--sticker-rotate, 0deg));
+    transition: all 0.3s ease;
+    border: 1px dashed rgba(139, 111, 71, 0.2);
+    cursor: default;
+}
+.sticker-item:hover {
+    transform: rotate(var(--sticker-rotate, 0deg)) scale(1.08);
+    box-shadow: var(--shadow-sticker-hover);
+    z-index: 5;
+}
+.sticker-item svg {
+    width: 55%;
+    height: 55%;
+}
+.sticker-item .sticker-name {
+    font-family: var(--font-cute);
+    font-size: 11px;
+    color: var(--color-cocoa-light);
+    margin-top: 3px;
+}
+
+/* 未解锁状态 */
+.sticker-item.locked {
+    filter: grayscale(100%) brightness(0.7);
+    opacity: 0.6;
+}
+.sticker-item.locked svg {
+    opacity: 0.3;
+}
+.sticker-item.locked::before {
+    content: '?';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -60%);
+    font-family: var(--font-cute);
+    font-size: 32px;
+    color: var(--color-cocoa-light);
+    z-index: 2;
+}
+.sticker-item.locked .sticker-name {
+    visibility: hidden;
+}
+
+/* 金色特殊贴纸 */
+.sticker-item.gold {
+    background: linear-gradient(135deg, #FFF8DC, #FFE4B5);
+    border: 2px dashed var(--color-gold);
+    box-shadow: 0 0 10px rgba(255,215,0,0.4), var(--shadow-sticker);
+}
+.sticker-item.gold::after {
+    content: '★';
+    position: absolute;
+    top: -8px; right: -8px;
+    font-size: 18px;
+    color: var(--color-gold);
+    text-shadow: 0 0 5px rgba(255,215,0,0.6);
+}
+
+/* 解锁动画 */
+@keyframes stickerPop {
+    0% { transform: scale(0) rotate(-30deg); opacity: 0; }
+    60% { transform: scale(1.2) rotate(5deg); opacity: 1; }
+    100% { transform: scale(1) rotate(var(--sticker-rotate, 0deg)); opacity: 1; }
+}
+.sticker-item.just-unlocked {
+    animation: stickerPop 0.6s ease-out;
+}
+
+/* ============ 设置面板 ============ */
+.settings-section {
+    text-align: center;
+}
+.setting-item {
+    margin-bottom: 18px;
+    text-align: left;
+}
+.setting-label {
+    font-family: var(--font-cute);
+    font-size: 15px;
+    color: var(--color-cocoa);
+    margin-bottom: 6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.setting-value {
+    background: var(--color-mint);
+    padding: 2px 10px;
+    border-radius: 10px;
+    font-size: 14px;
+    border: 1px dashed #8BC9B0;
+}
+input[type="range"] {
+    width: 100%;
+    height: 8px;
+    border-radius: 10px;
+    background: #F0E8D8;
+    outline: none;
+    -webkit-appearance: none;
+    border: 1px dashed var(--color-cocoa-light);
+}
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    background: var(--color-peach);
+    border: 2px solid var(--color-cocoa);
+    cursor: pointer;
+    box-shadow: var(--shadow-sticker);
+}
+input[type="range"]::-moz-range-thumb {
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    background: var(--color-peach);
+    border: 2px solid var(--color-cocoa);
+    cursor: pointer;
+}
+
+/* 声音开关 */
+.sound-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 15px;
+    font-family: var(--font-cute);
+    font-size: 15px;
+}
+.sound-switch {
+    position: relative;
+    width: 50px; height: 26px;
+    background: #F0E8D8;
+    border-radius: 13px;
+    cursor: pointer;
+    transition: background 0.3s;
+    border: 1px dashed var(--color-cocoa-light);
+}
+.sound-switch.on { background: var(--color-mint); }
+.sound-switch .knob {
+    position: absolute;
+    top: 2px; left: 2px;
+    width: 20px; height: 20px;
+    background: var(--color-white);
+    border-radius: 50%;
+    transition: left 0.3s;
+    box-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+}
+.sound-switch.on .knob { left: 26px; }
+
+/* ============ 撒花效果 ============ */
+@keyframes confettiFall {
+    0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+}
+.confetti {
+    position: fixed;
+    width: 10px; height: 10px;
+    z-index: 100;
+    pointer-events: none;
+    animation: confettiFall linear forwards;
+}
+
+/* ============ 底部 ============ */
+.footer-note {
+    text-align: center;
+    margin-top: 40px;
+    font-family: var(--font-hand);
+    font-size: 14px;
+    color: var(--color-cocoa-light);
+    padding-top: 20px;
+}
+.footer-note .washi-line {
+    position: relative;
+    display: inline-block;
+}
+
+/* ============ 响应式调整 ============ */
+@media (max-width: 600px) {
+    .header h1 { font-size: 36px; }
+    /* 容器宽度缩小（flex-column 布局高度自动撑开） */
+    .timer-display { width: 220px; }
+    /* 表盘直径 220px */
+    .timer-display .timer-face { width: 220px; height: 220px; }
+    /* 数字时间已在上方的 media block 里统一处理 */
+    /* 三根指针等比缩短（按 220/280 ≈ 0.786 缩放） */
+    .hour-hand   { height: 49px; }
+    .minute-hand { height: 64px; }
+    .second-hand { height: 72px; }
+    /* 刻度高度相应缩短（按 220/280 缩放） */
+    .clock-tick       { height: 33px; }
+    .clock-tick.major { height: 41px; }
+    /* 中心轴点缩小 */
+    .clock-center-dot { width: 14px; height: 14px; }
+    .btn-sticker { font-size: 15px; padding: 10px 20px; }
+}
+</style>
+</head>
+<body>
+
+<!-- 和纸胶带装饰 -->
+<div class="washi washi-top-left"></div>
+<div class="washi washi-top-right"></div>
+<div class="washi washi-bottom"></div>
+
+<div class="container">
+
+    <!-- 标题 -->
+    <div class="header">
+        <span class="doodle doodle-star1">✦</span>
+        <span class="doodle doodle-star2">✧</span>
+        <span class="doodle doodle-heart1">♥</span>
+        <span class="doodle doodle-flower1">✿</span>
+        <h1>🍓 零食番茄钟</h1>
+        <div class="subtitle">✎ 手账贴纸风 · 让专注变可爱 ✎</div>
+    </div>
+
+    <!-- 主内容 -->
+    <div class="main-content">
+
+        <!-- 左侧：计时器 -->
+        <div class="sticker-card timer-section">
+            <!-- 阶段横幅 -->
+            <div id="phaseBanner" class="phase-banner phase-focus">🍅 专注中</div>
+
+            <!-- 事件规划表：4 行对应 4 轮番茄循环，每行可写本轮任务 -->
+            <div class="event-planner" id="eventPlanner">
+                <div class="planner-header">
+                    <span class="planner-title">✏️ 今日计划</span>
+                    <span class="planner-hint">点击下方输入本轮任务</span>
+                </div>
+
+                <!-- 第 1 轮：专注 → 休息 -->
+                <div class="plan-row" data-plan="1">
+                    <div class="plan-badge focus-badge">①</div>
+                    <div class="plan-phase">
+                        <span class="phase-emoji">🍅</span>
+                        <span class="phase-name">专注 · <span class="phase-dur" data-dur="focus">25</span>分</span>
+                    </div>
+                    <input class="plan-task" type="text" placeholder="本轮要做的事..." data-round="1" />
+                    <div class="plan-rest">
+                        <span class="rest-emoji">🍃</span>
+                        <span class="rest-label">短休</span>
+                    </div>
+                </div>
+
+                <!-- 第 2 轮 -->
+                <div class="plan-row" data-plan="2">
+                    <div class="plan-badge focus-badge">②</div>
+                    <div class="plan-phase">
+                        <span class="phase-emoji">🍅</span>
+                        <span class="phase-name">专注 · <span class="phase-dur" data-dur="focus">25</span>分</span>
+                    </div>
+                    <input class="plan-task" type="text" placeholder="本轮要做的事..." data-round="2" />
+                    <div class="plan-rest">
+                        <span class="rest-emoji">🍃</span>
+                        <span class="rest-label">短休</span>
+                    </div>
+                </div>
+
+                <!-- 第 3 轮 -->
+                <div class="plan-row" data-plan="3">
+                    <div class="plan-badge focus-badge">③</div>
+                    <div class="plan-phase">
+                        <span class="phase-emoji">🍅</span>
+                        <span class="phase-name">专注 · <span class="phase-dur" data-dur="focus">25</span>分</span>
+                    </div>
+                    <input class="plan-task" type="text" placeholder="本轮要做的事..." data-round="3" />
+                    <div class="plan-rest">
+                        <span class="rest-emoji">🍃</span>
+                        <span class="rest-label">短休</span>
+                    </div>
+                </div>
+
+                <!-- 第 4 轮：最后一轮完成后 → 长休 -->
+                <div class="plan-row" data-plan="4">
+                    <div class="plan-badge focus-badge">④</div>
+                    <div class="plan-phase">
+                        <span class="phase-emoji">🍅</span>
+                        <span class="phase-name">专注 · <span class="phase-dur" data-dur="focus">25</span>分</span>
+                    </div>
+                    <input class="plan-task" type="text" placeholder="本轮要做的事..." data-round="4" />
+                    <div class="plan-rest long-rest">
+                        <span class="rest-emoji">☕</span>
+                        <span class="rest-label">长休</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 旧的 round-indicator（隐藏，JS 仍同步状态） -->
+            <div class="round-indicator" id="roundIndicator" style="display:none;">
+                <div class="round-dot" data-round="1">1</div>
+                <div class="round-dot" data-round="2">2</div>
+                <div class="round-dot" data-round="3">3</div>
+                <div class="round-dot" data-round="4">4</div>
+            </div>
+
+            <!-- 鼓励文案 -->
+            <div class="encourage-text" id="encourageText">💪 拿起小饼干，开始专注吧！</div>
+
+            <!-- 计时器表盘（秒表形式） -->
+            <div class="timer-display">
+                <div class="timer-face">
+                    <!-- 背景：卡通番茄 SVG（z-index:0，在最底层） -->
+                    <svg class="tomato-bg" viewBox="0 0 280 280" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <radialGradient id="tomatoBody" cx="38%" cy="35%" r="65%">
+                                <stop offset="0%"  stop-color="#FF8A8A"/>
+                                <stop offset="55%" stop-color="#FF4757"/>
+                                <stop offset="100%" stop-color="#C0392B"/>
+                            </radialGradient>
+                            <radialGradient id="tomatoLeaf" cx="50%" cy="80%" r="80%">
+                                <stop offset="0%"  stop-color="#81C784"/>
+                                <stop offset="100%" stop-color="#2E7D32"/>
+                            </radialGradient>
+                            <radialGradient id="tomatoHighlight" cx="30%" cy="28%" r="25%">
+                                <stop offset="0%"  stop-color="rgba(255,255,255,0.8)"/>
+                                <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
+                            </radialGradient>
+                        </defs>
+                        <!-- 番茄主体（圆形） -->
+                        <ellipse cx="140" cy="155" rx="118" ry="112" fill="url(#tomatoBody)"/>
+                        <!-- 高光 -->
+                        <ellipse cx="112" cy="120" rx="42" ry="28" fill="url(#tomatoHighlight)"/>
+
+                        <!-- ===== 番茄卡通表情（整体下移到 y=175 以下，避开中心指针覆盖区） ===== -->
+
+                        <!-- 腮红 -->
+                        <ellipse cx="86"  cy="210" rx="18" ry="10" fill="#FF8FA3" opacity="0.82"/>
+                        <ellipse cx="194" cy="210" rx="18" ry="10" fill="#FF8FA3" opacity="0.82"/>
+
+                        <!-- 眼睛（偏上，在 y=175~195 区间） -->
+                        <g id="tomatoEyes">
+                            <ellipse cx="110" cy="180" rx="10" ry="13" fill="#2B2B2B"/>
+                            <circle  cx="113" cy="175" r="4" fill="#FFFFFF"/>
+                            <circle  cx="108" cy="183" r="1.8" fill="#FFFFFF"/>
+                            <ellipse cx="170" cy="180" rx="10" ry="13" fill="#2B2B2B"/>
+                            <circle  cx="173" cy="175" r="4" fill="#FFFFFF"/>
+                            <circle  cx="168" cy="183" r="1.8" fill="#FFFFFF"/>
+                        </g>
+
+                        <!-- 微笑嘴巴（偏下 y=220~235） -->
+                        <path d="M120 228 Q140 246 160 228"
+                              stroke="#2B2B2B" stroke-width="4.5"
+                              stroke-linecap="round" fill="none"/>
+
+                        <!-- ===== 番茄顶部绿色花萼 ===== -->
+                        <g transform="translate(140,50)">
+                            <path d="M0 0 Q-30 -20 -50 -5 Q-30 10 0 0" fill="url(#tomatoLeaf)"/>
+                            <path d="M0 0 Q30 -20 50 -5 Q30 10 0 0" fill="url(#tomatoLeaf)"/>
+                            <path d="M0 0 Q-15 -35 -35 -40 Q-10 -20 0 0" fill="url(#tomatoLeaf)"/>
+                            <path d="M0 0 Q15 -35 35 -40 Q10 -20 0 0" fill="url(#tomatoLeaf)"/>
+                            <path d="M0 0 Q0 -40 -5 -50 Q5 -25 0 0" fill="url(#tomatoLeaf)"/>
+                        </g>
+                        <!-- 花萼连接柄 -->
+                        <rect x="135" y="45" width="10" height="18" rx="4" fill="#6D4C41"/>
+                    </svg>
+
+                    <!-- 进度环 + 刻度容器（z-index:1/2） -->
+                    <div class="timer-ring" id="timerRing"></div>
+
+                    <!-- 三根指针（高对比度颜色） -->
+                    <!-- 时针：番茄红 -->
+                    <span class="clock-hand hour-hand" id="hourHand"></span>
+                    <!-- 分针：皇家蓝 -->
+                    <span class="clock-hand minute-hand" id="minuteHand"></span>
+                    <!-- 秒针：金黄 -->
+                    <span class="clock-hand second-hand" id="secondHand"></span>
+
+                    <!-- 中心轴点 -->
+                    <div class="clock-center-dot"></div>
+                </div>
+                <!-- 表盘下方的数字时间显示（分/冒号/秒 三段，不同颜色便于区分） -->
+                <div class="time-capsule">
+                    <span class="time-min" id="timeMin">25</span>
+                    <span class="time-colon" id="timeColon">:</span>
+                    <span class="time-sec" id="timeSec">00</span>
+                </div>
+            </div>
+
+            <!-- 控制按钮（开始/暂停合并为一个 toggle 按钮） -->
+            <div class="control-buttons">
+                <button class="btn-sticker btn-play" id="btnToggle">▶ 开始</button>
+                <button class="btn-sticker btn-reset" id="btnReset">↺ 重置</button>
+                <button class="btn-sticker btn-skip" id="btnSkip">⏭ 跳过</button>
+            </div>
+        </div>
+
+        <!-- 右侧面板 -->
+        <div class="side-panel">
+
+            <!-- 贴纸收藏 -->
+            <div class="sticker-card collection-section">
+                <div class="section-title">零食贴纸收藏</div>
+                <div class="stickers-grid" id="stickersGrid">
+                    <!-- JS 动态生成 -->
+                </div>
+            </div>
+
+            <!-- 设置面板 -->
+            <div class="sticker-card settings-section">
+                <div class="section-title">时间设置</div>
+
+                <div class="setting-item">
+                    <div class="setting-label">🍅 专注时长 <span class="setting-value" id="focusVal">25 分</span></div>
+                    <input type="range" id="focusRange" min="15" max="60" step="5" value="25">
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-label">🍃 短休息 <span class="setting-value" id="shortVal">5 分</span></div>
+                    <input type="range" id="shortRange" min="3" max="15" step="1" value="5">
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-label">☕ 长休息 <span class="setting-value" id="longVal">15 分</span></div>
+                    <input type="range" id="longRange" min="10" max="30" step="5" value="15">
+                </div>
+
+                <div class="sound-toggle">
+                    <span>🔔 声音</span>
+                    <div class="sound-switch on" id="soundSwitch">
+                        <div class="knob"></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- 底部 -->
+    <div class="footer-note">
+        <span>✿ 每一次专注，都值得一块小零食奖励 ✿</span>
+    </div>
+</div>
+
+
+<script>
+/* ======================== 零食贴纸 SVG 库 ======================== */
+const SNACK_SVGS = {
+    // 番茄（经典番茄钟）
+    tomato: `<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="32" cy="38" rx="22" ry="20" fill="#FF6B6B"/>
+        <ellipse cx="32" cy="38" rx="22" ry="20" fill="url(#tomatoGrad)" opacity="0.3"/>
+        <ellipse cx="24" cy="30" rx="6" ry="4" fill="#FFB3B3" opacity="0.6"/>
+        <path d="M22 20 Q28 10 32 18 Q36 10 42 20" stroke="#4CAF50" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <ellipse cx="26" cy="18" rx="5" ry="3" fill="#66BB6A" transform="rotate(-15 26 18)"/>
+        <ellipse cx="38" cy="18" rx="5" ry="3" fill="#81C784" transform="rotate(15 38 18)"/>
+    </svg>`,
+
+    // 薯片
+    chips: `<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="32" cy="45" rx="22" ry="12" fill="#D4A574"/>
+        <ellipse cx="32" cy="42" rx="20" ry="10" fill="#F4C27A"/>
+        <ellipse cx="25" cy="40" rx="6" ry="3" fill="#FFD89B" opacity="0.7"/>
+        <ellipse cx="38" cy="42" rx="4" ry="2" fill="#FFE8BA" opacity="0.6"/>
+        <path d="M10 35 Q20 20 32 30 Q44 20 54 35" stroke="#8B6F47" stroke-width="2" fill="none"/>
+        <circle cx="22" cy="38" r="1.5" fill="#8B4513" opacity="0.4"/>
+        <circle cx="40" cy="40" r="1.5" fill="#8B4513" opacity="0.4"/>
+    </svg>`,
+
+    // 巧克力
+    chocolate: `<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+        <rect x="12" y="22" width="40" height="32" rx="3" fill="#7B3F00"/>
+        <rect x="12" y="22" width="40" height="32" rx="3" fill="url(#chocoGrad)" opacity="0.5"/>
+        <line x1="22" y1="22" x2="22" y2="54" stroke="#5C2E00" stroke-width="1.5"/>
+        <line x1="32" y1="22" x2="32" y2="54" stroke="#5C2E00" stroke-width="1.5"/>
+        <line x1="42" y1="22" x2="42" y2="54" stroke="#5C2E00" stroke-width="1.5"/>
+        <line x1="12" y1="32" x2="52" y2="32" stroke="#5C2E00" stroke-width="1.5"/>
+        <line x1="12" y1="42" x2="52" y2="42" stroke="#5C2E00" stroke-width="1.5"/>
+        <rect x="14" y="24" width="6" height="2" rx="1" fill="#A0522D" opacity="0.8"/>
+    </svg>`,
+
+    // 棒棒糖
+    lollipop: `<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+        <rect x="31" y="32" width="3" height="28" fill="#D4C2A0"/>
+        <circle cx="32" cy="26" r="18" fill="#FF6B9D"/>
+        <circle cx="32" cy="26" r="18" fill="url(#lolliGrad)"/>
+        <path d="M32 8 A18 18 0 0 1 50 26" stroke="#FFF" stroke-width="4" fill="none"/>
+        <path d="M14 26 A18 18 0 0 1 32 8" stroke="#FFB3D0" stroke-width="4" fill="none"/>
+        <path d="M24 22 Q32 26 40 22" stroke="#FFF" stroke-width="3" fill="none" opacity="0.5"/>
+    </svg>`,
+
+    // 冰淇淋
+    icecream: `<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+        <path d="M20 40 L32 58 L44 40 Z" fill="#F4D0A0"/>
+        <path d="M22 44 L32 54 L42 44" stroke="#D4A574" stroke-width="1" fill="none"/>
+        <path d="M20 38 Q32 18 44 38 Q42 42 32 42 Q22 42 20 38" fill="#FF9EBF"/>
+        <path d="M26 26 Q28 22 30 26" stroke="#FFF" stroke-width="2" fill="none"/>
+        <path d="M34 30 Q36 27 38 30" stroke="#FFF" stroke-width="2" fill="none"/>
+        <circle cx="24" cy="28" r="3" fill="#FFD700"/>
+    </svg>`,
+
+    // 甜甜圈
+    donut: `<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="32" cy="34" r="20" fill="#D2691E"/>
+        <circle cx="32" cy="34" r="20" fill="url(#donutGrad)" opacity="0.4"/>
+        <circle cx="32" cy="34" r="8" fill="#FFFDF5"/>
+        <path d="M12 34 Q32 14 52 34 Q48 20 32 18 Q16 20 12 34" fill="#FFB6C1"/>
+        <rect x="20" y="22" width="3" height="6" rx="1" fill="#FF6347" transform="rotate(-20 21 25)"/>
+        <rect x="38" y="20" width="3" height="5" rx="1" fill="#32CD32" transform="rotate(30 39 22)"/>
+        <rect x="46" y="28" width="3" height="5" rx="1" fill="#FFD700" transform="rotate(60 47 30)"/>
+        <rect x="16" y="30" width="3" height="5" rx="1" fill="#9370DB" transform="rotate(-40 17 32)"/>
+    </svg>`,
+
+    // 奶茶
+    milktea: `<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+        <rect x="18" y="20" width="28" height="36" rx="4" fill="#D4A574"/>
+        <rect x="18" y="20" width="28" height="8" rx="4" fill="#F5DEB3"/>
+        <rect x="16" y="16" width="32" height="6" rx="2" fill="#DEB887"/>
+        <ellipse cx="32" cy="40" rx="12" ry="4" fill="#5D3A1A"/>
+        <ellipse cx="32" cy="44" rx="12" ry="4" fill="#4A2E15"/>
+        <circle cx="28" cy="42" r="2" fill="#1A0F08"/>
+        <circle cx="34" cy="44" r="2" fill="#1A0F08"/>
+        <circle cx="30" cy="46" r="1.5" fill="#1A0F08"/>
+        <rect x="30" y="6" width="4" height="20" rx="2" fill="#FFB6C1"/>
+    </svg>`,
+
+    // 饼干
+    cookie: `<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="32" cy="34" r="22" fill="#D4A574"/>
+        <circle cx="32" cy="34" r="22" fill="url(#cookieGrad)" opacity="0.4"/>
+        <circle cx="24" cy="28" r="4" fill="#5D3A1A"/>
+        <circle cx="38" cy="26" r="3" fill="#5D3A1A"/>
+        <circle cx="32" cy="38" r="5" fill="#5D3A1A"/>
+        <circle cx="42" cy="42" r="3" fill="#5D3A1A"/>
+        <circle cx="22" cy="44" r="3" fill="#5D3A1A"/>
+        <circle cx="38" cy="48" r="2.5" fill="#5D3A1A"/>
+        <circle cx="18" cy="34" r="2" fill="#8B6914" opacity="0.5"/>
+        <circle cx="46" cy="34" r="2" fill="#8B6914" opacity="0.5"/>
+    </svg>`,
+
+    // 爆米花（特殊金色贴纸）
+    popcorn: `<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+        <path d="M16 40 L48 40 L44 60 L20 60 Z" fill="#FFB6C1"/>
+        <path d="M18 42 L46 42 L43 58 L21 58 Z" fill="#FF69B4"/>
+        <ellipse cx="22" cy="28" rx="10" ry="8" fill="#FFF8DC"/>
+        <ellipse cx="32" cy="22" rx="12" ry="10" fill="#FFFAE6"/>
+        <ellipse cx="42" cy="28" rx="10" ry="8" fill="#FFF8DC"/>
+        <ellipse cx="28" cy="32" rx="8" ry="6" fill="#FFFAE6"/>
+        <ellipse cx="36" cy="32" rx="8" ry="6" fill="#FFFAE6"/>
+        <circle cx="25" cy="26" r="2" fill="#FFD700" opacity="0.6"/>
+        <circle cx="35" cy="24" r="2" fill="#FFD700" opacity="0.6"/>
+    </svg>`
+};
+
+const SNACK_NAMES = {
+    tomato: '番茄🍅',
+    chips: '薯片🥔',
+    chocolate: '巧克力🍫',
+    lollipop: '棒棒糖🍭',
+    icecream: '冰淇淋🍦',
+    donut: '甜甜圈🍩',
+    milktea: '奶茶🧋',
+    cookie: '饼干🍪',
+    popcorn: '✨金爆米花✨'
+};
+
+// 每个贴纸的旋转角度，制造手账贴纸上随意粘贴的感觉
+const STICKER_ROTATIONS = [-4, 3, -2, 5, -3, 4, -5, 2, 0];
+
+/* ======================== 鼓励文案库 ======================== */
+const ENCOURAGE_MESSAGES = {
+    focus: [
+        '💪 拿起小饼干，开始专注吧！',
+        '🍅 番茄就位！冲鸭！',
+        '📚 加油！零食在终点等你！',
+        '🎯 专注 25 分钟，奖励自己一块糖！',
+        '💫 你可以的！薯片在招手！'
+    ],
+    shortBreak: [
+        '🍃 吃口零食，站起来走走！',
+        '🫖 喝口水，伸个懒腰吧！',
+        '⭐ 休息一下，摸摸小鱼干！',
+        '🎵 听首小歌，放松放松！'
+    ],
+    longBreak: [
+        '☕ 长休息！好好犒劳自己！',
+        '🍰 大零食时间！尽情放松！',
+        '🎉 完成一轮！值得一顿小零食！'
+    ]
+};
+
+/* ======================== 计时器核心 ======================== */
+const PomodoroTimer = {
+    // 状态
+    phase: 'focus',              // focus | shortBreak | longBreak
+    round: 1,                    // 当前轮次 1-4
+    isRunning: false,
+    isPaused: false,
+    remaining: 25 * 60,          // 剩余秒数（整数，用于数字显示和阶段判定）
+
+    // requestAnimationFrame 驱动的平滑计时
+    rafId: null,                 // rAF 句柄
+    startTimestamp: 0,           // 本轮启动时的 performance.now()
+    consumedMs: 0,               // 已流逝毫秒数（跨暂停累加）
+    lastWholeSecond: -1,         // 上一次整秒标记（用来只在整数秒才更新数字）
+
+    // 配置
+    config: {
+        focus: 25,
+        shortBreak: 5,
+        longBreak: 15
+    },
+
+    // 初始化
+    init() {
+        this.initClockFace();
+        this.bindUI();
+        this.loadPlannerFromStorage();   // 从 localStorage 恢复任务输入
+        this.renderStickers();
+        this.updateDisplay();
+        this.updateToggleBtn();
+        this.updateRoundIndicator();    // 同时更新事件规划表高亮/打勾
+        this.updateEventPlanner();
+        this.showEncourage();
+    },
+
+    // localStorage key
+    PLANNER_STORAGE_KEY: 'pomodoro-planner-v1',
+
+    // 从 localStorage 恢复 4 个任务输入
+    loadPlannerFromStorage() {
+        try {
+            const saved = JSON.parse(localStorage.getItem(this.PLANNER_STORAGE_KEY) || '{}');
+            const inputs = document.querySelectorAll('.plan-task');
+            inputs.forEach(inp => {
+                const r = inp.dataset.round;
+                if (saved[r]) inp.value = saved[r];
+                // 每次输入变化立刻持久化
+                inp.addEventListener('input', () => this.savePlannerToStorage());
+            });
+        } catch (e) { /* 首次或损坏时忽略 */ }
+    },
+
+    // 保存当前所有任务输入到 localStorage
+    savePlannerToStorage() {
+        const data = {};
+        document.querySelectorAll('.plan-task').forEach(inp => {
+            data[inp.dataset.round] = inp.value.trim();
+        });
+        try { localStorage.setItem(this.PLANNER_STORAGE_KEY, JSON.stringify(data)); }
+        catch (e) { /* 存储满时忽略 */ }
+    },
+
+    // 同步事件规划表的 active/completed 状态与轮次指示器
+    updateEventPlanner() {
+        const rows = document.querySelectorAll('.plan-row');
+        rows.forEach(row => {
+            const r = parseInt(row.dataset.plan);
+            row.classList.remove('active', 'completed');
+            if (r < this.round) row.classList.add('completed');
+            else if (r === this.round && this.phase === 'focus') row.classList.add('active');
+        });
+    },
+
+    // 初始化表盘：动态生成 60 个刻度，设置秒针末端 emoji
+    initClockFace() {
+        const ring = document.getElementById('timerRing');
+        for (let i = 0; i < 60; i++) {
+            const tick = document.createElement('div');
+            tick.className = 'clock-tick' + (i % 5 === 0 ? ' major' : '');
+            tick.style.setProperty('--tick-angle', (i * 6) + 'deg');
+            ring.appendChild(tick);
+        }
+        const secondHand = document.getElementById('secondHand');
+        secondHand.setAttribute('data-emoji', '🍅');
+    },
+
+    // 绑定 UI 事件（合并后的 toggle 按钮）
+    bindUI() {
+        // 合并开始/暂停为一个 toggle 按钮
+        document.getElementById('btnToggle').onclick = () => this.toggleStartPause();
+        document.getElementById('btnReset').onclick = () => this.reset();
+        document.getElementById('btnSkip').onclick = () => this.skip();
+
+        // 设置滑块
+        document.getElementById('focusRange').oninput = (e) => {
+            this.config.focus = parseInt(e.target.value);
+            document.getElementById('focusVal').textContent = this.config.focus + ' 分';
+            if (!this.isRunning) { this.phase = 'focus'; this.round = 1; this.reset(); }
+        };
+        document.getElementById('shortRange').oninput = (e) => {
+            this.config.shortBreak = parseInt(e.target.value);
+            document.getElementById('shortVal').textContent = this.config.shortBreak + ' 分';
+        };
+        document.getElementById('longRange').oninput = (e) => {
+            this.config.longBreak = parseInt(e.target.value);
+            document.getElementById('longVal').textContent = this.config.longBreak + ' 分';
+        };
+
+        // 声音开关
+        document.getElementById('soundSwitch').onclick = (e) => {
+            e.currentTarget.classList.toggle('on');
+            AudioManager.enabled = e.currentTarget.classList.contains('on');
+        };
+    },
+
+    // 获取当前阶段时长（秒）
+    getPhaseDuration() {
+        switch (this.phase) {
+            case 'focus': return this.config.focus * 60;
+            case 'shortBreak': return this.config.shortBreak * 60;
+            case 'longBreak': return this.config.longBreak * 60;
+        }
+    },
+
+    // ========== 合并后的开始/暂停逻辑 ==========
+
+    // 切换：要么开始（新开始 / 从暂停恢复），要么暂停
+    toggleStartPause() {
+        if (this.isRunning && !this.isPaused) {
+            // 正在跑 → 暂停
+            this.pause();
+        } else {
+            // 没跑或暂停中 → 开始 / 恢复
+            this.start();
+        }
+    },
+
+    // 开始计时（首次 or 从暂停恢复）
+    start() {
+        if (this.isRunning && !this.isPaused) return;
+
+        if (this.isPaused) {
+            // 从暂停恢复：把已消耗时间保留，继续累加
+            this.isPaused = false;
+            this.lastWholeSecond = -1;  // 强制下一帧立刻更新一次数字
+        } else {
+            // 全新开始：重置所有计时变量
+            this.consumedMs = 0;
+            this.remaining = this.getPhaseDuration();
+            this.lastWholeSecond = -1;
+            this.isRunning = true;
+            this.isPaused = false;
+            this.showEncourage();
+        }
+        this.startTimestamp = performance.now();
+        this.cancelRAF();
+        this.loopRAF();
+        this.updateToggleBtn();
+    },
+
+    // 暂停
+    pause() {
+        if (!this.isRunning || this.isPaused) return;
+        // 把当前帧的已流逝时间累加进 consumedMs
+        const now = performance.now();
+        this.consumedMs += now - this.startTimestamp;
+        this.isPaused = true;
+        this.cancelRAF();
+        this.updateToggleBtn();
+    },
+
+    // 重置
+    reset() {
+        this.cancelRAF();
+        this.isRunning = false;
+        this.isPaused = false;
+        this.phase = 'focus';
+        this.round = 1;
+        this.consumedMs = 0;
+        this.remaining = this.getPhaseDuration();
+        this.updateDisplay();
+        this.updatePhaseBanner();
+        this.updateRoundIndicator();
+        this.updateToggleBtn();
+        this.showEncourage();
+    },
+
+    // 跳过当前阶段
+    skip() {
+        this.cancelRAF();
+        this.isRunning = false;
+        this.isPaused = false;
+        this.consumedMs = 0;
+        this.phaseComplete();
+    },
+
+    // ========== requestAnimationFrame 平滑循环 ==========
+
+    cancelRAF() {
+        if (this.rafId) {
+            cancelAnimationFrame(this.rafId);
+            this.rafId = null;
+        }
+    },
+
+    // rAF 循环：每帧更新指针（毫秒级平滑），整秒时更新数字和 remaining
+    loopRAF() {
+        const tick = () => {
+            if (!this.isRunning || this.isPaused) return;
+
+            const totalDuration = this.getPhaseDuration();
+            // 已流逝毫秒 = 之前暂停累计的 + 本轮开始到现在的
+            const elapsedMs = this.consumedMs + (performance.now() - this.startTimestamp);
+            const elapsedSecFloat = elapsedMs / 1000;  // 浮点秒（带小数）
+            const elapsedSecWhole = Math.floor(elapsedSecFloat);  // 整秒
+
+            // 整秒变化时才更新数字显示 + remaining（避免每帧重绘数字）
+            if (elapsedSecWhole !== this.lastWholeSecond) {
+                this.lastWholeSecond = elapsedSecWhole;
+                this.remaining = Math.max(0, totalDuration - elapsedSecWhole);
+                this.updateDisplay();
+            }
+
+            // 指针每帧都更新（rAF 驱动 → 平滑）
+            this.updateHandsWithElapsed(elapsedMs, totalDuration);
+
+            // 阶段完成检测
+            if (elapsedSecWhole >= totalDuration) {
+                this.isRunning = false;
+                this.isPaused = false;
+                this.consumedMs = 0;
+                this.phaseComplete();
+                this.updateToggleBtn();
+                return;
+            }
+
+            this.rafId = requestAnimationFrame(tick);
+        };
+        this.rafId = requestAnimationFrame(tick);
+    },
+
+    // 用已流逝毫秒数精确计算三根指针角度（含秒针小数 → 平滑）
+    updateHandsWithElapsed(elapsedMs, totalDuration) {
+        const elapsedSecFloat = elapsedMs / 1000;
+        const totalDurationMs = totalDuration * 1000;
+
+        // 时针：整体进度（0°→360°）
+        const hourDeg = (elapsedMs / totalDurationMs) * 360;
+        // 分针：每分钟 6°，并随秒数平滑过渡
+        const minuteDeg = ((elapsedSecFloat / 60) % 60) * 6;
+        // 秒针：每秒 6°，用毫秒小数实现平滑扫秒
+        const secondDeg = (elapsedSecFloat % 60) * 6;
+
+        document.getElementById('hourHand').style.transform =
+            `translateX(-50%) rotate(${hourDeg}deg)`;
+        document.getElementById('minuteHand').style.transform =
+            `translateX(-50%) rotate(${minuteDeg}deg)`;
+        document.getElementById('secondHand').style.transform =
+            `translateX(-50%) rotate(${secondDeg}deg)`;
+
+        // conic-gradient 进度条（用整秒计算，每帧更新成本低）
+        const progressDeg = Math.min((elapsedMs / totalDurationMs) * 360, 360);
+        const ring = document.getElementById('timerRing');
+        ring.style.background =
+            `conic-gradient(var(--phase-color, rgba(255,255,255,0.45)) ${progressDeg}deg, transparent ${progressDeg}deg)`;
+    },
+
+    // ========== 按钮状态同步 ==========
+
+    // 根据当前计时状态，更新 toggle 按钮的文案/颜色/图标
+    updateToggleBtn() {
+        const btn = document.getElementById('btnToggle');
+        btn.classList.remove('btn-play', 'btn-pause');
+
+        if (this.isRunning && !this.isPaused) {
+            // 正在运行 → 显示"暂停"
+            btn.textContent = '⏸ 暂停';
+            btn.classList.add('btn-pause');
+        } else {
+            // 未运行或已暂停 → 显示"开始"
+            btn.textContent = '▶ 开始';
+            btn.classList.add('btn-play');
+        }
+    },
+
+    // 阶段完成
+    phaseComplete() {
+        this.cancelRAF();
+        this.isRunning = false;
+        this.isPaused = false;
+        this.consumedMs = 0;
+
+        // 播放提示音
+        AudioManager.play(this.phase);
+
+        // 触发撒花效果
+        ConfettiManager.burst();
+
+        // 如果刚完成的是专注阶段，解锁贴纸
+        if (this.phase === 'focus') {
+            StickerCollection.unlockNext();
+        }
+
+        // 切换到下一阶段
+        this.switchPhase();
+        this.updateToggleBtn();
+    },
+
+    // 切换阶段
+    switchPhase() {
+        if (this.phase === 'focus') {
+            // 专注完成 → 休息
+            if (this.round >= 4) {
+                this.phase = 'longBreak';
+            } else {
+                this.phase = 'shortBreak';
+            }
+        } else {
+            // 休息完成 → 专注
+            if (this.phase === 'longBreak') {
+                this.round = 1;  // 四轮完成，重置
+            } else {
+                this.round++;
+            }
+            this.phase = 'focus';
+        }
+
+        this.consumedMs = 0;
+        this.remaining = this.getPhaseDuration();
+        this.updateDisplay();
+        this.updatePhaseBanner();
+        this.updateRoundIndicator();
+        this.showEncourage();
+    },
+
+    // 更新时间显示（分/秒分别写入三段式 capsule）
+    updateDisplay() {
+        const minStr = String(Math.floor(this.remaining / 60)).padStart(2, '0');
+        const secStr = String(this.remaining % 60).padStart(2, '0');
+
+        const minEl = document.getElementById('timeMin');
+        const secEl = document.getElementById('timeSec');
+
+        // 分钟更新时带一次缩放动画（只在分钟真正变化时触发）
+        if (minEl.textContent !== minStr) {
+            minEl.style.transform = 'scale(0.92)';
+            setTimeout(() => { minEl.textContent = minStr; minEl.style.transform = 'scale(1)'; }, 90);
+        } else {
+            minEl.textContent = minStr;
+        }
+
+        // 秒每秒更新（用 requestAnimationFrame 过渡到下一刻度感）
+        if (secEl.textContent !== secStr) {
+            secEl.style.transform = 'scale(0.92)';
+            setTimeout(() => { secEl.textContent = secStr; secEl.style.transform = 'scale(1)'; }, 70);
+        } else {
+            secEl.textContent = secStr;
+        }
+    },
+
+    // 更新阶段横幅（同时更新表盘颜色和秒针 emoji）
+    updatePhaseBanner() {
+        const banner = document.getElementById('phaseBanner');
+        banner.className = 'phase-banner';
+        const ring = document.getElementById('timerRing');
+        ring.className = 'timer-ring';
+
+        switch (this.phase) {
+            case 'focus':
+                banner.classList.add('phase-focus');
+                banner.textContent = '🍅 专注中';
+                ring.classList.add('timer-ring-focus');
+                break;
+            case 'shortBreak':
+                banner.classList.add('phase-short-break');
+                banner.textContent = '🍃 吃零食时间';
+                ring.classList.add('timer-ring-short');
+                break;
+            case 'longBreak':
+                banner.classList.add('phase-long-break');
+                banner.textContent = '☕ 长休息 · 犒劳自己';
+                ring.classList.add('timer-ring-long');
+                break;
+        }
+
+        // 仅在阶段切换时更新一次秒针末端 emoji
+        const decoMap = {
+            focus: ['🍅', '🍪', '🍫', '🍩', '🍭'],
+            shortBreak: ['🍃', '🌸', '🍵', '☁️'],
+            longBreak: ['☕', '🍰', '🎀', '🌈']
+        };
+        const deco = decoMap[this.phase];
+        const secondHand = document.getElementById('secondHand');
+        secondHand.setAttribute('data-emoji', deco[Math.floor(Math.random() * deco.length)]);
+    },
+
+    // 更新轮次指示器（同时级联更新事件规划表 active/completed 状态）
+    updateRoundIndicator() {
+        const dots = document.querySelectorAll('.round-dot');
+        dots.forEach(dot => {
+            const r = parseInt(dot.dataset.round);
+            dot.classList.remove('active', 'completed');
+            if (r < this.round) dot.classList.add('completed');
+            else if (r === this.round) dot.classList.add('active');
+        });
+        this.updateEventPlanner();  // 同步事件规划表
+    },
+
+    // 显示鼓励文案
+    showEncourage() {
+        const msgs = ENCOURAGE_MESSAGES[this.phase];
+        const msg = msgs[Math.floor(Math.random() * msgs.length)];
+        const el = document.getElementById('encourageText');
+        el.style.opacity = '0';
+        setTimeout(() => {
+            el.textContent = msg;
+            el.style.opacity = '1';
+        }, 200);
+    },
+
+    // 渲染贴纸
+    renderStickers() {
+        StickerCollection.render();
+    }
+};
+
+/* ======================== 贴纸收集系统 ======================== */
+const StickerCollection = {
+    // 8 个普通贴纸（按完成顺序解锁），金色爆米花单独在第4轮完成时解锁
+    normalStickers: ['tomato', 'chips', 'chocolate', 'lollipop', 'icecream', 'donut', 'milktea', 'cookie'],
+    goldSticker: 'popcorn',
+    unlockedCount: 0,                    // 普通贴纸已解锁数量
+    unlockedSet: new Set(),              // 已解锁 key 集合
+    totalFocusRounds: 0,                 // 累计完成的专注轮次
+
+    init() {
+        // 初始解锁第一个（番茄）
+        this.unlockNext();
+    },
+
+    // 解锁下一个普通贴纸
+    unlockNext() {
+        this.totalFocusRounds++;
+
+        if (this.unlockedCount >= this.normalStickers.length) {
+            // 所有普通贴纸已解锁
+            this.unlockAtGrid('popcorn'); // 也确保金色爆米花位置
+            return;
+        }
+
+        const key = this.normalStickers[this.unlockedCount];
+        this.unlockedSet.add(key);
+        this.unlockedCount++;
+
+        // 触发新解锁动画
+        this.unlockAtGrid(key);
+
+        // 第4轮专注完成时，额外解锁金色爆米花奖励
+        if (this.totalFocusRounds === 4 && !this.unlockedSet.has('popcorn')) {
+            setTimeout(() => {
+                this.unlockedSet.add('popcorn');
+                this.unlockAtGrid('popcorn');
+            }, 800); // 延迟一下，让普通解锁动画先完成
+        }
+    },
+
+    // 在网格中解锁指定贴纸并播放动画
+    unlockAtGrid(key) {
+        const grid = document.getElementById('stickersGrid');
+        const items = grid.querySelectorAll('.sticker-item');
+        const allKeys = [...this.normalStickers, this.goldSticker];
+        const index = allKeys.indexOf(key);
+        if (index >= 0 && items[index]) {
+            items[index].classList.remove('locked');
+            items[index].classList.add('just-unlocked');
+            // 金色贴纸添加撒花特效
+            if (key === 'popcorn') {
+                items[index].classList.add('gold');
+                ConfettiManager.burst();
+            }
+            setTimeout(() => items[index].classList.remove('just-unlocked'), 600);
+        }
+    },
+
+    // 渲染所有贴纸到网格（8个普通 + 1个金色）
+    render() {
+        const grid = document.getElementById('stickersGrid');
+        grid.innerHTML = '';
+
+        const allKeys = [...this.normalStickers, this.goldSticker];
+        allKeys.forEach((key, index) => {
+            const isUnlocked = this.unlockedSet.has(key);
+            const rotation = STICKER_ROTATIONS[index % STICKER_ROTATIONS.length];
+            const isGold = key === 'popcorn';
+
+            const item = document.createElement('div');
+            item.className = 'sticker-item';
+            if (!isUnlocked) item.classList.add('locked');
+            if (isGold && isUnlocked) item.classList.add('gold');
+            item.style.setProperty('--sticker-rotate', rotation + 'deg');
+
+            item.innerHTML = SNACK_SVGS[key] + `<div class="sticker-name">${SNACK_NAMES[key]}</div>`;
+            grid.appendChild(item);
+        });
+    }
+};
+
+/* ======================== 声音管理 ======================== */
+const AudioManager = {
+    enabled: true,
+    ctx: null,
+
+    ensureCtx() {
+        if (!this.ctx) {
+            this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        return this.ctx;
+    },
+
+    play(phase) {
+        if (!this.enabled) return;
+        try {
+            const ctx = this.ensureCtx();
+            // 专注结束：高音；休息结束：低音
+            const freq = phase === 'focus' ? 880 : 660;
+            this.playTone(ctx, freq, 0.15);
+            setTimeout(() => this.playTone(ctx, freq * 1.5, 0.15), 200);
+        } catch (e) {
+            console.warn('音频播放失败:', e);
+        }
+    },
+
+    playTone(ctx, frequency, duration) {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.value = frequency;
+        gain.gain.setValueAtTime(0, ctx.currentTime);
+        gain.gain.linearRampToValueAtTime(0.3, ctx.currentTime + 0.02);
+        gain.gain.linearRampToValueAtTime(0, ctx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(ctx.currentTime);
+        osc.stop(ctx.currentTime + duration);
+    }
+};
+
+/* ======================== 撒花效果 ======================== */
+const ConfettiManager = {
+    colors: ['#FF6B9D', '#FFD700', '#B5EAD7', '#FF9EBF', '#8EC5E8', '#FFFACD', '#E8D5F2'],
+    shapes: ['●', '✦', '♥', '✿', '★', '◆'],
+
+    burst() {
+        for (let i = 0; i < 30; i++) {
+            setTimeout(() => this.createPiece(), i * 30);
+        }
+    },
+
+    createPiece() {
+        const el = document.createElement('div');
+        el.className = 'confetti';
+        el.style.left = Math.random() * 100 + 'vw';
+        el.style.top = '-20px';
+        el.style.color = this.colors[Math.floor(Math.random() * this.colors.length)];
+        el.style.fontSize = (10 + Math.random() * 14) + 'px';
+        el.textContent = this.shapes[Math.floor(Math.random() * this.shapes.length)];
+        el.style.animationDuration = (2 + Math.random() * 2) + 's';
+        document.body.appendChild(el);
+        setTimeout(() => el.remove(), 4000);
+    }
+};
+
+/* ======================== 启动 ======================== */
+window.addEventListener('DOMContentLoaded', () => {
+    PomodoroTimer.init();
+    StickerCollection.init();
+});
+</script>
+
+</body>
+</html>
